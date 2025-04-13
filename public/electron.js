@@ -13,20 +13,32 @@ function createWindow() {
     minWidth: 900,
     minHeight: 680,
     webPreferences: {
-      nodeIntegration: true,
-      contextIsolation: false,
+      nodeIntegration: false,
+      contextIsolation: true,
+      preload: path.join(__dirname, 'preload.js')
     }
   });
 
-  mainWindow.loadURL(
-    isDev
-      ? 'http://localhost:3000'
-      : `file://${path.join(__dirname, '../build/index.html')}`
-  );
+  // Load the app
+  const startUrl = isDev
+    ? 'http://localhost:3000'
+    : `file://${path.join(__dirname, '../build/index.html')}`;
 
+  console.log('Loading URL:', startUrl);
+  
+  mainWindow.loadURL(startUrl).catch(err => {
+    console.error('Failed to load URL:', err);
+  });
+
+  // Open DevTools in development
   if (isDev) {
     mainWindow.webContents.openDevTools();
   }
+
+  // Log any console messages from the renderer process
+  mainWindow.webContents.on('console-message', (event, level, message, line, sourceId) => {
+    console.log('Renderer Console:', message);
+  });
 
   mainWindow.on('closed', () => (mainWindow = null));
 }

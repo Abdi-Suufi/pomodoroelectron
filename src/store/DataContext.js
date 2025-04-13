@@ -1,9 +1,6 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
-const electron = window.require('electron');
-const ipcRenderer = electron.ipcRenderer;
-
 const DataContext = createContext();
 
 export const useData = () => useContext(DataContext);
@@ -19,7 +16,7 @@ export const DataProvider = ({ children }) => {
   useEffect(() => {
     const loadData = async () => {
       try {
-        const loadedData = await ipcRenderer.invoke('get-data');
+        const loadedData = await window.electron.ipcRenderer.invoke('get-data');
         setData(loadedData);
       } catch (error) {
         console.error('Failed to load data:', error);
@@ -33,7 +30,7 @@ export const DataProvider = ({ children }) => {
 
   useEffect(() => {
     if (!loading) {
-      ipcRenderer.invoke('save-data', data);
+      window.electron.ipcRenderer.invoke('save-data', data);
     }
   }, [data, loading]);
 

@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
 import { useData } from '../store/DataContext';
 
-const electron = window.require('electron');
-const ipcRenderer = electron.ipcRenderer;
-
 function Settings() {
   const { settings, updateSettings } = useData();
   const [formValues, setFormValues] = useState({

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 import Sidebar from './components/Sidebar';
@@ -8,9 +8,6 @@ import TaskDetail from './components/TaskDetail';
 import Reports from './components/Reports';
 import Settings from './components/Settings';
 import { DataProvider } from './store/DataContext';
-
-const electron = window.require('electron');
-const ipcRenderer = electron.ipcRenderer;
 
 function App() {
   return (
